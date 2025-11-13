@@ -92,26 +92,25 @@ public class TicTacToe extends JPanel implements ActionListener {
         g.drawString("Tic Tac Toe", 320, 280);
     }
 
-    private void drawGame(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        g2.setStroke(new BasicStroke(4));
-        int offset = 90;
-        int base = 15;
+    private class XOListener extends MouseAdapter {
+        @Override
+        public void mouseClicked(MouseEvent e) {
+            if (gameDone) return;
+            int a = e.getX(), b = e.getY();
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                int centerX = base + offset * i + 45; // Center X
-                int centerY = base + offset * j + 45; // Center Y
+            int selX = -1, selY = -1;
+            if (a > 15 && a < 95) selX = 0;
+            else if (a > 100 && a < 185) selX = 1;
+            else if (a > 190 && a < 275) selX = 2;
 
-                if (board[i][j] == 1) { // X centered
-                    g2.setColor(Color.BLACK);
-                    g2.drawLine(centerX - 25, centerY - 25, centerX + 25, centerY + 25);
-                    g2.drawLine(centerX + 25, centerY - 25, centerX - 25, centerY + 25);
-                } else if (board[i][j] == 2) { // O centered
-                    g2.setColor(Color.WHITE);
-                    g2.fillOval(centerX - 25, centerY - 25, 50, 50);
-                    g2.setColor(turtle);
-                    g2.fillOval(centerX - 15, centerY - 15, 30, 30);
+            if (b > 15 && b < 95) selY = 0;
+            else if (b > 100 && b < 185) selY = 1;
+            else if (b > 190 && b < 275) selY = 2;
+
+            if (selX != -1 && selY != -1 && board[selX][selY] == 0) {
+                board[selX][selY] = playerX ? 1 : 2;
+                playerX = !playerX;
+                checkWinner();
                 }
             }
         }
